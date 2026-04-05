@@ -16,20 +16,35 @@ class CreateUsersTables extends Migration
     {
         DB::unprepared(
             <<<SQL
-            CREATE TABLE IF NOT EXISTS accounttype (
-                id SMALLSERIAL PRIMARY KEY,
-                description VARCHAR(255) NOT NULL
+            CREATE TABLE IF NOT EXISTS accounttypes (
+                accounttypes_id SMALLSERIAL PRIMARY KEY,
+                accounttypes_description VARCHAR(255) NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS clients (
-                id BIGSERIAL PRIMARY KEY,
-                account_type SMALLINT NOT NULL,
-                complete_name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                cpf VARCHAR(11) UNIQUE,
-                cnpj VARCHAR(14) UNIQUE,
-                password VARCHAR(255) NOT NULL,
-                FOREIGN KEY (account_type) REFERENCES accounttype(id) ON DELETE CASCADE ON UPDATE CASCADE
+            CREATE TABLE IF NOT EXISTS juristicaccount (
+                juristicaccount_id BIGSERIAL PRIMARY KEY,
+                juristicaccount_accounttype SMALLINT NOT NULL,
+                juristicaccount_user SMALLINT NOT NULL,
+                juristicaccount_completename VARCHAR(255) NOT NULL,
+                juristicaccount_email VARCHAR(255) NOT NULL UNIQUE,
+                juristicaccount_cnpj VARCHAR(14) UNIQUE,
+                FOREIGN KEY (juristicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (juristicaccount_user) REFERENCES users(id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS fisicaccount (
+                fisicaccount_id BIGSERIAL PRIMARY KEY,
+                fisicaccount_accounttype SMALLINT NOT NULL,
+                fisicaccount_user SMALLINT NOT NULL,
+                fisicaccount_completename VARCHAR(255) NOT NULL,
+                fisicaccount_email VARCHAR(255) NOT NULL UNIQUE,
+                fisicaccount_cpf VARCHAR(11) UNIQUE,
+                FOREIGN KEY (fisicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (fisicaccount_user) REFERENCES users(id)
+                ON DELETE CASCADE ON UPDATE CASCADE
             );
 SQL
         );
@@ -44,8 +59,9 @@ SQL
     {
         DB::unprepared(
             <<<SQL
-            DROP TABLE IF EXISTS clients;
-            DROP TABLE IF EXISTS accounttype
+            DROP TABLE IF EXISTS juristicaccount;
+            DROP TABLE IF EXISTS fisicaccount;
+            DROP TABLE IF EXISTS accounttypes
 SQL
         );
     }
