@@ -12,12 +12,14 @@ class JuristicAccountFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array{juristicaccount_accounttype:int, juristicaccount_cnpj:string}
      */
     public function definition(): array
     {
         return [
             'juristicaccount_accounttype' => 1,
+
+            // @phpstan-ignore-next-line
             'juristicaccount_cnpj' => $this->faker->unique()->cnpj(false),
         ];
     }

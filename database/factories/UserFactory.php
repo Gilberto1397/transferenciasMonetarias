@@ -40,7 +40,7 @@ class UserFactory extends Factory
         });
     }
 
-    public function juristicAccount()
+    public function juristicAccount(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
@@ -49,7 +49,7 @@ class UserFactory extends Factory
         });
     }
 
-    public function fisicAccount()
+    public function fisicAccount(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
