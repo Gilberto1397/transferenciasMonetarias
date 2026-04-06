@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use stdClass;
 
 class User extends Authenticatable
 {
@@ -41,4 +43,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function juristicAccount()
+    {
+        return $this->hasOne(JuristicAccount::class, 'juristicaccount_user', 'id');
+    }
+
+    public function fisicAccount()
+    {
+        return $this->hasOne(FisicAccount::class, 'fisicaccount_user', 'id');
+    }
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 }
