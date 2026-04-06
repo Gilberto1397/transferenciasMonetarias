@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTables extends Migration
 {
@@ -25,8 +23,6 @@ class CreateUsersTables extends Migration
                 juristicaccount_id BIGSERIAL PRIMARY KEY,
                 juristicaccount_accounttype SMALLINT NOT NULL,
                 juristicaccount_user SMALLINT NOT NULL,
-                juristicaccount_completename VARCHAR(255) NOT NULL,
-                juristicaccount_email VARCHAR(255) NOT NULL UNIQUE,
                 juristicaccount_cnpj VARCHAR(14) UNIQUE,
                 FOREIGN KEY (juristicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
                 ON DELETE CASCADE ON UPDATE CASCADE,
@@ -38,8 +34,6 @@ class CreateUsersTables extends Migration
                 fisicaccount_id BIGSERIAL PRIMARY KEY,
                 fisicaccount_accounttype SMALLINT NOT NULL,
                 fisicaccount_user SMALLINT NOT NULL,
-                fisicaccount_completename VARCHAR(255) NOT NULL,
-                fisicaccount_email VARCHAR(255) NOT NULL UNIQUE,
                 fisicaccount_cpf VARCHAR(11) UNIQUE,
                 FOREIGN KEY (fisicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
                 ON DELETE CASCADE ON UPDATE CASCADE,
