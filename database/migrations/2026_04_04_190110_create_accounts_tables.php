@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class CreateUsersTables extends Migration
+class CreateAccountsTables extends Migration
 {
     /**
      * Run the migrations.
