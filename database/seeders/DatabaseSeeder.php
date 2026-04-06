@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\FisicAccount;
+use App\Models\JuristicAccount;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        AccountTypeSeeder::run();
+        User::factory(10)->juristicAccount()->has(JuristicAccount::factory(1), 'juristicAccount')->create();
+        User::factory(10)->fisicAccount()->has(FisicAccount::factory(1), 'fisicAccount')->create();
     }
 }
