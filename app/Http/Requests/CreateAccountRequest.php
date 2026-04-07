@@ -7,9 +7,9 @@ class CreateAccountRequest extends DefaultRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
@@ -22,7 +22,11 @@ class CreateAccountRequest extends DefaultRequest
         ];
     }
 
-    public function messages() {
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
         return [
             'name.required' => 'É necessário informar o nome do titular da conta!',
             'name.string' => 'O campo nome não possui um formato válido!',
@@ -55,14 +59,17 @@ class CreateAccountRequest extends DefaultRequest
         ];
     }
 
-    protected function prepareForValidation()
+    /**
+     * @return void
+     */
+    protected function prepareForValidation(): void
     {
         $this->merge([
-            'name' => strip_tags($this->name),
-            'email' => strip_tags($this->email),
-            'cnpj' => strip_tags($this->cnpj),
-            'password' => strip_tags($this->password),
-            'password_confirmation' => strip_tags($this->password_confirmation)
+            'name' => strip_tags(strval($this->name)),
+            'email' => strip_tags(strval($this->email)),
+            'cnpj' => strip_tags(strval($this->cnpj)),
+            'password' => strip_tags(strval($this->password)),
+            'password_confirmation' => strip_tags(strval($this->password_confirmation))
         ]);
     }
 }
