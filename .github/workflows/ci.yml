@@ -1,0 +1,41 @@
+name: ci.yml
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - "*"
+
+jobs:
+
+  run-tests:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '8.3'
+      - uses: actions/checkout@v4
+      - name: Cria arquivo .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Instala dependências do Laravel
+        run: composer install
+      - name: Gera a chave do Laravel
+        run: php artisan key:generate
+      - name: Ajusta permissões das pastas de storage e cache
+        run: chmod -R 777 storage bootstrap/cache
+#      - name: Cria arquivo database.sqlite
+#        run: |
+#          touch database/database.sqlite
+#      - name: Executa as migrações
+#        run: php artisan migrate
+#      - name: Executa a criação de seeders
+#        run: php artisan db:seed
+      - name: Executa os testes do PHP Stan
+        run: composer phpStan
+
+
+    #      - name: Executa os testes automatizados
+    #        run: php artisan test
+
