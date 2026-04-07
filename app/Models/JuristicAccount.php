@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $juristicaccount_id
+ * @property int $juristicaccount_accounttype
+ * @property int $juristicaccount_user
+ * @property string $juristicaccount_cnpj
+ */
 class JuristicAccount extends Model
 {
     use HasFactory;
