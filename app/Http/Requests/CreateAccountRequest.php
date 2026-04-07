@@ -2,20 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class CreateAccountRequest extends FormRequest
+class CreateAccountRequest extends DefaultRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,10 +13,10 @@ class CreateAccountRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users.email',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'tipoConta' => 'required|integer',
-            'cpf' => 'numeric|size:11|unique:fisicaccount.fisicaccount_cpf',
-            'cnpj' => 'string|size:14|unique:juristicaccount.juristicaccount_cnpj',
+            'cpf' => 'integer|digits:11|unique:fisicaccount,fisicaccount_cpf',
+            'cnpj' => 'string|digits:14|unique:juristicaccount,juristicaccount_cnpj',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string',
         ];
@@ -50,11 +38,11 @@ class CreateAccountRequest extends FormRequest
             'tipoConta.integer' => 'É necessário informar o tipo da conta!',
 
             'cpf.numeric' => 'O campo cpf deve conter apenas números!',
-            'cpf.size' => 'O campo cpf deve conter 11 caracteres!',
+            'cpf.digits' => 'O campo cpf deve conter 11 caracteres!',
             'cpf.unique' => 'Já existe uma conta para esse cpf',
 
             'cnpj.string' => 'O campo cnpj está inválido!',
-            'cnpj.size' => 'O campo cnpj deve conter 14 caracteres!',
+            'cnpj.digits' => 'O campo cnpj deve conter 14 caracteres!',
             'cnpj.unique' => 'Já existe uma conta para esse cnpj',
 
             'password.required' => 'É necessário informar uma senha para a conta!',
