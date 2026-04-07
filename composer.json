@@ -48,7 +48,8 @@
             "@php artisan key:generate --ansi"
         ],
         "phpStan": "./vendor/bin/phpstan analyse --memory-limit=2G",
-        "phpStanComErros": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
+        "phpStanComErros": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline",
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {

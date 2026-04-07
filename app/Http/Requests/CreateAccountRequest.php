@@ -15,8 +15,8 @@ class CreateAccountRequest extends DefaultRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'tipoConta' => 'required|integer',
-            'cpf' => 'integer|digits:11|unique:fisicaccount,fisicaccount_cpf',
-            'cnpj' => 'string|digits:14|unique:juristicaccount,juristicaccount_cnpj',
+            'cpf' => 'numeric|digits:11|unique:fisicaccount,fisicaccount_cpf',
+            'cnpj' => 'numeric|digits:14|unique:juristicaccount,juristicaccount_cnpj',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string',
         ];
@@ -45,7 +45,7 @@ class CreateAccountRequest extends DefaultRequest
             'cpf.digits' => 'O campo cpf deve conter 11 caracteres!',
             'cpf.unique' => 'Já existe uma conta para esse cpf',
 
-            'cnpj.string' => 'O campo cnpj está inválido!',
+            'cnpj.numeric' => 'O campo cnpj está inválido!',
             'cnpj.digits' => 'O campo cnpj deve conter 14 caracteres!',
             'cnpj.unique' => 'Já existe uma conta para esse cnpj',
 
