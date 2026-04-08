@@ -71,7 +71,7 @@ class CreateAccountRequestTest extends TestCase
      * - The data should not be accepted by the validation rules.
      * - The error message should match the expected message.
      */
-    public function dataNotAccepted(string $fieldName, array $dataRequest, string $expectedMessage): void
+    public function testDataNotAccepted(string $fieldName, array $dataRequest, string $expectedMessage): void
     {
         /**
          * Arrange - Given
