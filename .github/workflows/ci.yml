@@ -34,7 +34,5 @@ jobs:
       #        run: php artisan db:seed
       - name: Executa os testes do PHP Stan
         run: composer phpStan
-
-
-    #      - name: Executa os testes automatizados
-    #        run: php artisan test
+      - name: Executa os testes automatizados
+        run: composer test
