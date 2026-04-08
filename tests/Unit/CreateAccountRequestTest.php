@@ -56,7 +56,7 @@ class CreateAccountRequestTest extends TestCase
 
     /**
      * @param string $fieldName
-     * @param array $dataRequest
+     * @param array<string, mixed> $dataRequest
      * @param string $expectedMessage
      * @return void
      * @test
@@ -93,7 +93,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function nameNotAccepted(): array
     {
@@ -129,7 +129,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function emailNotAccepted(): array
     {
@@ -165,7 +165,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function tipoContaNotAccepted(): array
     {
@@ -192,7 +192,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function cpfNotAccepted(): array
     {
@@ -221,7 +221,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function cnpjNotAccepted(): array
     {
@@ -250,7 +250,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function passwordNotAccepted(): array
     {
@@ -286,7 +286,7 @@ class CreateAccountRequestTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<string, array{0: string, 1: array<string, mixed>, 2: string}>
      */
     public function passwordConfirmationNotAccepted(): array
     {
