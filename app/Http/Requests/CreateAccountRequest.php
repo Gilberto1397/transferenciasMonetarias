@@ -14,9 +14,9 @@ class CreateAccountRequest extends DefaultRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
-            'tipoConta' => 'required|integer',
-            'cpf' => 'numeric|digits:11|unique:fisicaccount,fisicaccount_cpf',
-            'cnpj' => 'numeric|digits:14|unique:juristicaccount,juristicaccount_cnpj',
+            'tipoConta' => 'required|integer|exists:accounttypes,accounttypes_id',
+            'cpf' => 'required_if:tipoConta,2|numeric|digits:11|unique:fisicaccount,fisicaccount_cpf',
+            'cnpj' => 'required_if:tipoConta,1|numeric|digits:14|unique:juristicaccount,juristicaccount_cnpj',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string',
         ];
@@ -40,14 +40,17 @@ class CreateAccountRequest extends DefaultRequest
 
             'tipoConta.required' => 'É necessário informar o tipo da conta!',
             'tipoConta.integer' => 'É necessário informar o tipo da conta!',
+            'tipoConta.exists' => 'O tipo de conta informado é inválido!',
 
             'cpf.numeric' => 'O campo cpf deve conter apenas números!',
             'cpf.digits' => 'O campo cpf deve conter 11 caracteres!',
-            'cpf.unique' => 'Já existe uma conta para esse cpf',
+            'cpf.unique' => 'Já existe uma conta para esse cpf!',
+            'cpf.required_if' => 'O campo cpf é obrigatório para contas do tipo física!',
 
             'cnpj.numeric' => 'O campo cnpj está inválido!',
             'cnpj.digits' => 'O campo cnpj deve conter 14 caracteres!',
-            'cnpj.unique' => 'Já existe uma conta para esse cnpj',
+            'cnpj.unique' => 'Já existe uma conta para esse cnpj!',
+            'cnpj.required_if' => 'O campo cnpj é obrigatório para contas do tipo jurídica!',
 
             'password.required' => 'É necessário informar uma senha para a conta!',
             'password.string' => 'A senha informada não é válida!',
