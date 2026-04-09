@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Repositories;
+namespace App\Repositories;
 
 use app\Contracts\JuristicAccountRepository;
 use App\Http\Requests\CreateAccountRequest;
