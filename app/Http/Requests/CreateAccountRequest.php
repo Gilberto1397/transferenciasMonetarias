@@ -2,6 +2,15 @@
 
 namespace App\Http\Requests;
 
+/**
+ * @property string $name
+ * @property string $email
+ * @property int $tipoConta
+ * @property string|null $cpf
+ * @property string|null $cnpj
+ * @property string $password
+ * @property string $password_confirmation
+ */
 class CreateAccountRequest extends DefaultRequest
 {
     /**
