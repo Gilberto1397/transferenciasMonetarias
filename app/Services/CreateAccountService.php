@@ -16,6 +16,27 @@ class CreateAccountService
     private FisicAccountRepository $fisicAccountRepository;
     private UserRepository $userRepository;
 
+    /**
+     * @param JuristicAccountRepository $accountRepository
+     * @param FisicAccountRepository $fisicAccountRepository
+     * @param UserRepository $userRepository
+     */
+    public function __construct(
+        JuristicAccountRepository $accountRepository,
+        FisicAccountRepository    $fisicAccountRepository,
+        UserRepository            $userRepository
+    )
+    {
+        $this->accountRepository = $accountRepository;
+        $this->fisicAccountRepository = $fisicAccountRepository;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
+     * @param CreateAccountRequest $request
+     * @return OrganizeResponse
+     * @throws \Throwable
+     */
     public function createAccount(CreateAccountRequest $request): OrganizeResponse
     {
         DB::transaction(function () use ($request) {
@@ -26,8 +47,7 @@ class CreateAccountService
             }
             return new OrganizeResponse(201, 'Conta criada com sucesso!');
         });
-
-
+        throw new \DomainException('Erro ao tentar criar conta bancária!');
     }
 
     private function chooseAccount(CreateAccountRequest $request, User $user): bool

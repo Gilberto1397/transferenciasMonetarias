@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @param int $fisicaccount_id
- * @param int $fisicaccount_accounttype
- * @param int $fisicaccount_user
- * @param string $fisicaccount_cpf
+ * @property int $fisicaccount_id
+ * @property int $fisicaccount_accounttype
+ * @property int $fisicaccount_user
+ * @property string $fisicaccount_cpf
  */
 class FisicAccount extends Model
 {

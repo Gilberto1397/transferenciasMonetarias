@@ -32,7 +32,7 @@ class CreateAccountRequestTest extends TestCase
         $user = new User();
         $user->name = 'Existing User';
         $user->email = 'mail@mail.com';
-        $user->password = 123456789;
+        $user->password = '123456789';
         $user->balance = 0;
         $user->save();
     }
@@ -49,45 +49,45 @@ class CreateAccountRequestTest extends TestCase
      * The following checks are made:
      * - The data should be accepted by the validation rules.
      */
-//    public function testAcceptedData(): void
-//    {
-//        /**
-//         * Arrange - Given
-//         */
-//        $data1 = [
-//            'name' => 'João Silva',
-//            'email' => 'joao@example.com',
-//            'tipoConta' => 1,
-//            'cnpj' => '12345678901234',
-//            'password' => 'password123',
-//            'password_confirmation' => 'password123',
-//        ];
-//
-//        $data2 = [
-//            'name' => 'Empresa LTDA',
-//            'email' => 'empresa@example.com',
-//            'tipoConta' => 2,
-//            'cpf' => '12345678901',
-//            'password' => 'password123',
-//            'password_confirmation' => 'password123',
-//        ];
-//
-//        $dataSet = [$data1, $data2];
-//
-//        $request = new CreateAccountRequest();
-//
-//        foreach ($dataSet as $item) {
-//            /**
-//             * Act - When
-//             */
-//            $validator = Validator::make($item, $request->rules(), $request->messages());
-//
-//            /**
-//             * Assert - Then
-//             */
-//            $this->assertFalse($validator->fails(), "Data not accepted.");
-//        }
-//    }
+    public function testAcceptedData(): void
+    {
+        /**
+         * Arrange - Given
+         */
+        $data1 = [
+            'name' => 'João Silva',
+            'email' => 'joao@example.com',
+            'tipoConta' => 1,
+            'cnpj' => '99988855632015',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $data2 = [
+            'name' => 'Empresa LTDA',
+            'email' => 'empresa@example.com',
+            'tipoConta' => 2,
+            'cpf' => '66644455598',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $dataSet = [$data1, $data2];
+
+        $request = new CreateAccountRequest();
+
+        foreach ($dataSet as $item) {
+            /**
+             * Act - When
+             */
+            $validator = Validator::make($item, $request->rules(), $request->messages());
+
+            /**
+             * Assert - Then
+             */
+            $this->assertFalse($validator->fails(), "Data not accepted.");
+        }
+    }
 
     /**
      * @param string $fieldName

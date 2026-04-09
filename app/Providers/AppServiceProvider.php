@@ -11,6 +11,9 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array<string, string>
+     */
     public array $bindings = [
         UserRepository::class => UserRepositoryEloquent::class,
         JuristicAccountRepository::class => JuristicAccountRepositoryEloquent::class,
