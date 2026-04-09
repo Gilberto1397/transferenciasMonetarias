@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Contracts\FisicAccountRepository;
 use App\Contracts\JuristicAccountRepository;
 use App\Contracts\UserRepository;
+use App\Helpers\OrganizeResponse;
 use App\Http\Requests\CreateAccountRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CreateAccountService
 {
@@ -14,9 +16,18 @@ class CreateAccountService
     private FisicAccountRepository $fisicAccountRepository;
     private UserRepository $userRepository;
 
-    public function createAccount(CreateAccountRequest $request): void
+    public function createAccount(CreateAccountRequest $request): OrganizeResponse
     {
-        $user = $this->userRepository->createUser($request);
+        DB::transaction(function () use ($request) {
+            $user = $this->userRepository->createUser($request);
+
+            if (!$this->chooseAccount($request, $user)) {
+                throw new \DomainException('Erro ao criar conta bancária!');
+            }
+            return new OrganizeResponse(201, 'Conta criada com sucesso!');
+        });
+
+
     }
 
     private function chooseAccount(CreateAccountRequest $request, User $user): bool
