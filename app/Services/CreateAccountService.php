@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use app\Contracts\FisicAccountRepository;
-use app\Contracts\JuristicAccountRepository;
-use app\Contracts\UserRepository;
+use App\Contracts\FisicAccountRepository;
+use App\Contracts\JuristicAccountRepository;
+use App\Contracts\UserRepository;
 use App\Http\Requests\CreateAccountRequest;
+use App\Models\User;
 
 class CreateAccountService
 {
@@ -18,8 +19,11 @@ class CreateAccountService
         $user = $this->userRepository->createUser($request);
     }
 
-    private function chooseAccountCreate()
+    private function chooseAccount(CreateAccountRequest $request, User $user): bool
     {
-
+        if ($request->tipoConta === 1) {
+            return $this->accountRepository->createAccount($request, $user);
+        }
+        return $this->fisicAccountRepository->createAccount($request, $user);
     }
 }

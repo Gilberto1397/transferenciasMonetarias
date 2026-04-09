@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use app\Contracts\UserRepository;
+use App\Contracts\UserRepository;
 use App\Http\Requests\CreateAccountRequest;
 use App\Models\User;
 
