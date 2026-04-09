@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use app\Contracts\FisicAccountRepository;
-use app\Contracts\JuristicAccountRepository;
-use app\Contracts\UserRepository;
-use app\Repositories\JuristicAccountRepositoryEloquent;
-use app\Repositories\UserRepositoryEloquent;
+use App\Contracts\FisicAccountRepository;
+use App\Contracts\JuristicAccountRepository;
+use App\Contracts\UserRepository;
+use App\Repositories\JuristicAccountRepositoryEloquent;
+use App\Repositories\UserRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
