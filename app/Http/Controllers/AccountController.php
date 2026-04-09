@@ -3,11 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAccountRequest;
+use App\Services\CreateAccountService;
+use Illuminate\Http\JsonResponse;
 
 class AccountController
 {
-    public function createAccount(CreateAccountRequest $request): void
+    public function createAccount(CreateAccountRequest $request, CreateAccountService $service): JsonResponse
     {
-        dd($request->all());
+        try {
+            $response = $service->createAccount($request);
+            return response()->json(
+                ['message' => $response->getMessage(), 'error' => $response->getError()],
+                $response->getStatusCode()
+            );
+        } catch (\DomainException $e) {
+            return response()->json($e->getMessage(), 400)->send();
+        } catch (\Exception $e) {
+            return response()->json(
+                ['message' => 'Ocorreu um erro inesperado na criação de contas!', 'error' => true]
+                , 500
+            );
+        }
     }
 }
