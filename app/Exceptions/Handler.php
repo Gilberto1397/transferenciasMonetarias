@@ -35,14 +35,14 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (ValidationException $e, $request) {
+        $this->renderable(function (ValidationException $exception, $request) {
             return response()->json([
-                'messages' => $e->errors(),
+                'messages' => $exception->errors(),
                 'error' => true,
             ], 406);
         });
 
-        $this->renderable(function (Throwable $e) {
+        $this->renderable(function (Throwable $exception) {
             return response()->json([
                 'message' => 'Ooops, parece que houve um erro ao tentar criar a conta.',
                 'error' => true,
