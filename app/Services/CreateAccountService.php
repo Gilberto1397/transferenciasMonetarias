@@ -39,14 +39,22 @@ class CreateAccountService
      */
     public function createAccount(CreateAccountRequest $request): OrganizeResponse
     {
-        return DB::transaction(function () use ($request) {
+        try {
+            DB::beginTransaction();
             $user = $this->userRepository->createUser($request);
 
             if (!$this->chooseAccount($request, $user)) {
                 throw new \DomainException('Erro ao criar conta bancária!');
             }
+            DB::commit();
             return new OrganizeResponse(201, 'Conta criada com sucesso!');
-        });
+        } catch (\DomainException $e) {
+            DB::rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw new \DomainException('Houve um erro ao criar conta bancária!');
+        }
     }
 
     private function chooseAccount(CreateAccountRequest $request, User $user): bool

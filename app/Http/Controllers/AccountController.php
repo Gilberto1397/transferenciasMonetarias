@@ -17,11 +17,9 @@ class AccountController
                 $response->getStatusCode()
             );
         } catch (\DomainException $e) {
-            return response()->json($e->getMessage(), 400)->send();
-        } catch (\Exception $e) {
             return response()->json(
-                ['message' => 'Ocorreu um erro inesperado na criação de contas!', 'error' => true]
-                , 500
+                ['message' => $e->getMessage(), 'error' => true],
+                400
             );
         }
     }
