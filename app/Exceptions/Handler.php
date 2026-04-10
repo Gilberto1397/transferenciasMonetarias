@@ -34,8 +34,11 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e) {
+            return response()->json([
+                'message' => 'Ooops, parece que houve um erro ao tentar criar a conta.',
+                'error' => true,
+            ], 500);
         });
     }
 }

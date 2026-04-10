@@ -25,9 +25,9 @@ class CreateAccountsTables extends Migration
                 juristicaccount_user SMALLINT NOT NULL,
                 juristicaccount_cnpj VARCHAR(14) UNIQUE,
                 FOREIGN KEY (juristicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
-                ON DELETE CASCADE ON UPDATE CASCADE,
+                ON DELETE NO ACTION ON UPDATE NO ACTION,
                 FOREIGN KEY (juristicaccount_user) REFERENCES users(id)
-                ON DELETE CASCADE ON UPDATE CASCADE
+                ON DELETE NO ACTION ON UPDATE NO ACTION
             );
 
             CREATE TABLE IF NOT EXISTS fisicaccount (
@@ -36,9 +36,9 @@ class CreateAccountsTables extends Migration
                 fisicaccount_user SMALLINT NOT NULL,
                 fisicaccount_cpf VARCHAR(11) UNIQUE,
                 FOREIGN KEY (fisicaccount_accounttype) REFERENCES accounttypes(accounttypes_id)
-                ON DELETE CASCADE ON UPDATE CASCADE,
+                ON DELETE NO ACTION ON UPDATE NO ACTION,
                 FOREIGN KEY (fisicaccount_user) REFERENCES users(id)
-                ON DELETE CASCADE ON UPDATE CASCADE
+                ON DELETE NO ACTION ON UPDATE NO ACTION
             );
 SQL
         );
