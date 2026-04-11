@@ -18,17 +18,17 @@ class CreateAccountService
     private UserRepository $userRepository;
 
     /**
-     * @param JuristicAccountRepository $accountRepository
+     * @param JuristicAccountRepository $juristicAccountRepository
      * @param FisicAccountRepository $fisicAccountRepository
      * @param UserRepository $userRepository
      */
     public function __construct(
-        JuristicAccountRepository $accountRepository,
+        JuristicAccountRepository $juristicAccountRepository,
         FisicAccountRepository    $fisicAccountRepository,
         UserRepository            $userRepository
     )
     {
-        $this->accountRepository = $accountRepository;
+        $this->accountRepository = $juristicAccountRepository;
         $this->fisicAccountRepository = $fisicAccountRepository;
         $this->userRepository = $userRepository;
     }
