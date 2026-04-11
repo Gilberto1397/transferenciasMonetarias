@@ -10,11 +10,10 @@ class CreateLog
      * @param string $message
      * @param string $file
      * @param int $line
-     * @param array<string, mixed> $inputData
      * @return void
      */
-    public static function logError(string $message, string $file, int $line, array $inputData = []): void
+    public static function logError(string $message, string $file, int $line): void
     {
-        Log::error($message, ['file' => $file, 'line' => $line, 'data' => $inputData]);
+        Log::error($message, ['file' => $file, 'line' => $line]);
     }
 }
