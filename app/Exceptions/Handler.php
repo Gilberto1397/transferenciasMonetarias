@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\CreateLog;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -14,7 +15,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        //
+        Throwable::class
     ];
 
     /**
@@ -43,6 +44,8 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $exception) {
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
+
             return response()->json([
                 'message' => 'Ooops, parece que houve um erro ao tentar criar a conta.',
                 'error' => true,
