@@ -17,10 +17,10 @@ class AccountController
                 ['message' => $response->getMessage(), 'error' => $response->getError()],
                 $response->getStatusCode()
             );
-        } catch (\DomainException $e) {
+        } catch (\DomainException $exception) {
             CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
             return response()->json(
-                ['message' => $e->getMessage(), 'error' => true],
+                ['message' => $exception->getMessage(), 'error' => true],
                 400
             );
         }

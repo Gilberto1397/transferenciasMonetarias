@@ -36,7 +36,7 @@ class CreateAccountService
     /**
      * @param CreateAccountRequest $request
      * @return OrganizeResponse
-     * @throws \Throwable
+     * @throws \DomainException
      */
     public function createAccount(CreateAccountRequest $request): OrganizeResponse
     {

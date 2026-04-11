@@ -10,7 +10,7 @@ class CreateLog
      * @param string $message
      * @param string $file
      * @param int $line
-     * @param array $inputData
+     * @param array<string, mixed> $inputData
      * @return void
      */
     public static function logError(string $message, string $file, int $line, array $inputData = []): void
