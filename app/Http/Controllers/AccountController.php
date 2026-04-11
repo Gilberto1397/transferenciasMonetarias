@@ -6,7 +6,6 @@ use App\Helpers\CreateLog;
 use App\Http\Requests\CreateAccountRequest;
 use App\Services\CreateAccountService;
 use Illuminate\Http\JsonResponse;
-use PHPUnit\Util\Exception;
 
 class AccountController
 {
