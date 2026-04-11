@@ -51,12 +51,12 @@ class CreateAccountService
             return new OrganizeResponse(201, 'Conta criada com sucesso!');
         } catch (\DomainException $exception) {
             DB::rollBack();
-            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
-            throw $exception;
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
+            return new OrganizeResponse(500, $exception->getMessage());
         } catch (\Throwable $exception) {
             DB::rollBack();
-            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
-            throw new \DomainException('Houve um erro ao criar conta bancária!');
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
+            return new OrganizeResponse(500, 'Houve um erro ao criar conta bancária!');
         }
     }
 
