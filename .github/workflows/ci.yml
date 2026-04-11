@@ -25,16 +25,14 @@ jobs:
         run: php artisan key:generate
       - name: Ajusta permissões das pastas de storage e cache
         run: chmod -R 777 storage bootstrap/cache
-      #      - name: Cria arquivo database.sqlite
-      #        run: |
-      #          touch database/database.sqlite
-      #      - name: Executa as migrações
-      #        run: php artisan migrate
-      #      - name: Executa a criação de seeders
-      #        run: php artisan db:seed
+      - name: Cria arquivo database.sqlite
+        run: |
+          touch database/database.sqlite
+      - name: Executa as migrações
+        run: php artisan migrate
+      - name: Executa a criação de seeders
+        run: php artisan db:seed
       - name: Executa os testes do PHP Stan
         run: composer phpStan
-
-
-    #      - name: Executa os testes automatizados
-    #        run: php artisan test
+      - name: Executa os testes automatizados
+        run: composer test
