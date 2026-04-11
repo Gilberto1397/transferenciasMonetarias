@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit;
+namespace Tests\Unit\Requests;
 
 use App\Http\Requests\CreateAccountRequest;
 use App\Models\FisicAccount;
