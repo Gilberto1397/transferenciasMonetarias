@@ -14,4 +14,5 @@ yarn-error.log
 /.idea
 /.vscode
 phpstan.neon
-./resulttests.html, resulttests.xml
+./resulttests.html
+./resulttests.xml
