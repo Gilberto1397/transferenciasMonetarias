@@ -20,7 +20,6 @@ class DefaultRequest extends FormRequest
     }
 
     /**
-     * Função para enviar as mensagens de erro em caso de falha na validação.
      * @param  Validator  $validator
      * @throws ValidationException
      */
@@ -30,7 +29,6 @@ class DefaultRequest extends FormRequest
             'messages' => $validator->errors()->getMessages(),
             'error' => true
         ];
-
         throw new ValidationException($validator, new Response($data, 422));
     }
 }
