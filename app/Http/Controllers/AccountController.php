@@ -11,18 +11,10 @@ class AccountController
 {
     public function createAccount(CreateAccountRequest $request, CreateAccountService $service): JsonResponse
     {
-        try {
-            $response = $service->createAccount($request);
-            return response()->json(
-                ['message' => $response->getMessage(), 'error' => $response->getError()],
-                $response->getStatusCode()
-            );
-        } catch (\DomainException $exception) {
-            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
-            return response()->json(
-                ['message' => $exception->getMessage(), 'error' => true],
-                400
-            );
-        }
+        $response = $service->createAccount($request);
+        return response()->json(
+            ['message' => $response->getMessage(), 'error' => $response->getError()],
+            $response->getStatusCode()
+        );
     }
 }
