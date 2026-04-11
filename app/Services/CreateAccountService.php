@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\FisicAccountRepository;
 use App\Contracts\JuristicAccountRepository;
 use App\Contracts\UserRepository;
+use App\Helpers\CreateLog;
 use App\Helpers\OrganizeResponse;
 use App\Http\Requests\CreateAccountRequest;
 use App\Models\User;
@@ -48,11 +49,13 @@ class CreateAccountService
             }
             DB::commit();
             return new OrganizeResponse(201, 'Conta criada com sucesso!');
-        } catch (\DomainException $e) {
+        } catch (\DomainException $exception) {
             DB::rollBack();
-            throw $e;
-        } catch (\Throwable $e) {
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
+            throw $exception;
+        } catch (\Throwable $exception) {
             DB::rollBack();
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine(), $request->all());
             throw new \DomainException('Houve um erro ao criar conta bancária!');
         }
     }
