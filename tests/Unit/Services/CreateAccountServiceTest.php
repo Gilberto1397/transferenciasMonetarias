@@ -182,7 +182,7 @@ class CreateAccountServiceTest extends TestCase
      * @dataProvider dataRequest
      * @return void
      */
-    public function testCreateAccountException(CreateAccountRequest $request, User $user)
+    public function testCreateAccountException(CreateAccountRequest $request)
     {
         /**
          * Given - Arrange
@@ -217,9 +217,6 @@ class CreateAccountServiceTest extends TestCase
         /**
          * Then - Assert
          */
-        /**
-         * Then - Assert
-         */
         $this->assertInstanceOf(
             OrganizeResponse::class,
             $response,
@@ -236,7 +233,10 @@ class CreateAccountServiceTest extends TestCase
 
     }
 
-    public function dataRequest()
+    /**
+     * @return array<string, array{0: CreateAccountRequest, 1: User}>
+     */
+    public function dataRequest(): array
     {
         $user = new User();
         $user->id = 999;
