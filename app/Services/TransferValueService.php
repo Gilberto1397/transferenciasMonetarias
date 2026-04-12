@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Clients\AuthorizationClient;
 use App\Contracts\UserRepository;
 use App\Helpers\CreateLog;
 use App\Helpers\OrganizeResponse;
@@ -13,11 +14,17 @@ class TransferValueService
 {
     private UserRepository $userRepository;
     private GetTransferAccountsByIdService $service;
+    private AuthorizationClient $client;
 
-    public function __construct(UserRepository $userRepository, GetTransferAccountsByIdService $service)
+    public function __construct(
+        UserRepository $userRepository,
+        GetTransferAccountsByIdService $service,
+        AuthorizationClient $client
+    )
     {
         $this->userRepository = $userRepository;
         $this->service = $service;
+        $this->client = $client;
     }
 
     /**
@@ -28,6 +35,10 @@ class TransferValueService
     public function transferValue(TransferRequest $request): OrganizeResponse
     {
         try {
+            if (!$this->checkTransferAuthorization()) {
+                return new OrganizeResponse(403, 'Transferência não autorizada!');
+            }
+
             DB::beginTransaction();
             $accounts = $this->service->getTransferAccountsById($request);
             $this->checkAccountBalance($accounts['originAccount'], $request);
@@ -63,5 +74,10 @@ class TransferValueService
         if ($originAccount->balance < $request->value) {
             throw new \DomainException('Saldo insuficiente para realizar a transferência!');
         }
+    }
+
+    private function checkTransferAuthorization(): bool
+    {
+        return $this->client->checkAuthorization();
     }
 }
