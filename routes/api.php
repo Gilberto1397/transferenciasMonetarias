@@ -19,7 +19,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('contas')->group(function () {
         Route::post('', [AccountController::class, 'createAccount']);
     });
-    Route::prefix('transferencias')->group(function () {
+    Route::prefix('transfer')->group(function () {
         Route::put('', [TransferController::class, 'transferValue']);
     });
 });

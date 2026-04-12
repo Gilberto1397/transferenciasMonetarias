@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
             CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
 
             return response()->json([
-                'message' => 'Ooops, parece que houve um erro ao tentar criar a conta.',
+                'message' => 'Ooops, parece que houve um erro no sistema!',
                 'error' => true,
             ], 500);
         });
