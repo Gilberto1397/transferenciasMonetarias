@@ -47,4 +47,25 @@ class UserRepositoryEloquent implements UserRepository
         }
         return User::fromQuery($sql, ['accountId' => $accountId])->first();
     }
+
+    /**
+     * @param User $originAccount
+     * @param User $destinationAccount
+     * @param float $value
+     * @return bool
+     * @throws \DomainException
+     */
+    public function transferValue(User $originAccount, User $destinationAccount, float $value): bool
+    {
+        $originAccount->balance -= $value;
+        $destinationAccount->balance += $value;
+
+        if (! $originAccount->save()) {
+            throw new \DomainException('Falha ao debitar o valor da conta de origem!');
+        }
+        if (! $destinationAccount->save()) {
+            throw new \DomainException('Falha ao creditar o valor da conta de destino!');
+        }
+        return true;
+    }
 }

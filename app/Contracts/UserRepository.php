@@ -21,4 +21,13 @@ interface UserRepository
      * @return User|null
      */
     public function getUserByAccountAndTypeId(int $accountId, int $accountType): User|null;
+
+    /**
+     * @param User $originAccount
+     * @param User $destinationAccount
+     * @param float $value
+     * @return bool
+     * @throws \DomainException
+     */
+    public function transferValue(User $originAccount, User $destinationAccount, float $value): bool;
 }
