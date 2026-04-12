@@ -19,7 +19,7 @@ class CreateAccountsTables extends Migration
                 accounttypes_description VARCHAR(255) NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS juristicaccount (
+            CREATE TABLE IF NOT EXISTS juristicaccounts (
                 juristicaccount_id BIGSERIAL PRIMARY KEY,
                 juristicaccount_accounttype SMALLINT NOT NULL,
                 juristicaccount_user SMALLINT NOT NULL,
@@ -30,7 +30,7 @@ class CreateAccountsTables extends Migration
                 ON DELETE NO ACTION ON UPDATE NO ACTION
             );
 
-            CREATE TABLE IF NOT EXISTS fisicaccount (
+            CREATE TABLE IF NOT EXISTS fisicaccounts (
                 fisicaccount_id BIGSERIAL PRIMARY KEY,
                 fisicaccount_accounttype SMALLINT NOT NULL,
                 fisicaccount_user SMALLINT NOT NULL,
@@ -53,8 +53,8 @@ SQL
     {
         DB::unprepared(
             <<<SQL
-            DROP TABLE IF EXISTS juristicaccount;
-            DROP TABLE IF EXISTS fisicaccount;
+            DROP TABLE IF EXISTS juristicaccounts;
+            DROP TABLE IF EXISTS fisicaccounts;
             DROP TABLE IF EXISTS accounttypes
 SQL
         );

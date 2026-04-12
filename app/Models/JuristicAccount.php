@@ -17,7 +17,7 @@ class JuristicAccount extends Model
 {
     use HasFactory;
 
-    protected $table = 'juristicaccount';
+    protected $table = 'juristicaccounts';
     protected $primaryKey = 'juristicaccount_id';
     public $timestamps = false;
 
