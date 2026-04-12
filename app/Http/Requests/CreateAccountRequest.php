@@ -24,8 +24,8 @@ class CreateAccountRequest extends DefaultRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'tipoConta' => 'required|integer|exists:accounttypes,accounttypes_id',
-            'cpf' => 'required_if:tipoConta,2|numeric|digits:11|unique:fisicaccount,fisicaccount_cpf',
-            'cnpj' => 'required_if:tipoConta,1|numeric|digits:14|unique:juristicaccount,juristicaccount_cnpj',
+            'cpf' => 'required_if:tipoConta,2|numeric|digits:11|unique:fisicaccounts,fisicaccount_cpf',
+            'cnpj' => 'required_if:tipoConta,1|numeric|digits:14|unique:juristicaccounts,juristicaccount_cnpj',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string',
         ];
