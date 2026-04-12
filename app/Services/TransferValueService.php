@@ -39,18 +39,17 @@ class TransferValueService
             DB::commit();
 
             return new OrganizeResponse(
-                'Transferência realizada com sucesso!',
-                false,
-                200
+                200,
+                'Transferência realizada com sucesso!'
             );
         } catch (\DomainException $exception) {
             DB::rollBack();
             CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
-            return new OrganizeResponse($exception->getMessage(), true, 400);
+            return new OrganizeResponse(500, $exception->getMessage());
         } catch (\Throwable $exception) {
             DB::rollBack();
             CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
-            return new OrganizeResponse(500, 'Houve um erro ao criar conta bancária!');
+            return new OrganizeResponse(500, 'Ocorreu um erro ao processar a transferência!');
         }
     }
 
