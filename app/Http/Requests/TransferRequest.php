@@ -13,7 +13,7 @@ class TransferRequest extends DefaultRequest
     {
         return [
             'value' => 'required|numeric',
-            'originId' => 'required|integer|exists:fisicaccount,fisicaccount_id',
+            'originId' => 'required|integer|exists:fisicaccounts,fisicaccount_id',
             'destinationId' => 'required|integer',
             'accountTypeDestination' => 'required|integer|exists:accounttypes,accounttypes_id'
         ];
