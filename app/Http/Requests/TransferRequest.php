@@ -2,14 +2,20 @@
 
 namespace App\Http\Requests;
 
+/**
+ * @property float $value
+ * @property int $originId
+ * @property int $destinationId
+ * @property int $accountTypeDestination
+ */
 class TransferRequest extends DefaultRequest
 {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'value' => 'required|numeric',
@@ -19,7 +25,10 @@ class TransferRequest extends DefaultRequest
         ];
     }
 
-    public function messages()
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
             'value.required' => 'É necessário informar o valor da transferência!',
