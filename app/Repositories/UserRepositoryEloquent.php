@@ -23,14 +23,14 @@ class UserRepositoryEloquent implements UserRepository
         return $createdUser;
     }
 
-    public function getUserByFisicAccountId(int $fisicAccountId): User|null
+    public function getPayerUserById(int $userId): User|null
     {
         return User::fromQuery('
             select users.* from users
             inner join fisicaccounts on users.id = fisicaccounts.fisicaccount_user
-            where fisicaccounts.fisicaccount_id = :fisicAccountId
+            where users.id = :userId
                        ',
-            ['fisicAccountId' => $fisicAccountId]
+            ['userId' => $userId]
         )->first();
     }
 

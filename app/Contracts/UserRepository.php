@@ -10,17 +10,17 @@ interface UserRepository
     public function createUser(CreateAccountRequest $accountRequest): User;
 
     /**
-     * @param int $fisicAccountId
+     * @param int $userId
      * @return User|null
      */
-    public function getUserByFisicAccountId(int $fisicAccountId): User|null;
+    public function getPayerUserById(int $userId): User|null;
 
     /**
      * @param int $accountId
      * @param int $accountType
      * @return User|null
      */
-    public function getUserByAccountAndTypeId(int $accountId, int $accountType): User|null;
+    public function getPayeeUserById(int $userId): User|null;
 
     /**
      * @param User $originAccount

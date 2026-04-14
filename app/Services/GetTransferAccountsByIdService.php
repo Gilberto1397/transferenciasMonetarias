@@ -37,7 +37,7 @@ class GetTransferAccountsByIdService
      */
     private function getOriginAccount(int $originId): User
     {
-        $originAccount = $this->userRepository->getUserByFisicAccountId($originId);
+        $originAccount = $this->userRepository->getPayerUserById($originId);
 
         if (empty($originAccount)) {
             throw new \DomainException('Contas de origem não encontrada!');
