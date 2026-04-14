@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\JustFisicAccounts;
+
 /**
  * @property float $value
- * @property int $originId
- * @property int $destinationId
- * @property int $accountTypeDestination
+ * @property int $payer
+ * @property int $payee
  */
 class TransferRequest extends DefaultRequest
 {
@@ -19,9 +20,8 @@ class TransferRequest extends DefaultRequest
     {
         return [
             'value' => 'required|numeric',
-            'originId' => 'required|integer|exists:fisicaccounts,fisicaccount_id',
-            'destinationId' => 'required|integer',
-            'accountTypeDestination' => 'required|integer|exists:accounttypes,accounttypes_id'
+            'payer' => ['required','integer', 'exists:users,id', new JustFisicAccounts()],
+            'payee' => 'required|integer',
         ];
     }
 
@@ -34,17 +34,13 @@ class TransferRequest extends DefaultRequest
             'value.required' => 'É necessário informar o valor da transferência!',
             'value.numeric' => 'O valor da transferência deve ser um número válido!',
 
-            'originId.required' => 'É necessário informar a conta que fará à transferência!',
-            'originId.integer' => 'A conta de origem está inválida!',
-            'originId.exists' => 'A conta de origem informada não existe!',
+            'payer.required' => 'É necessário informar a conta que fará à transferência!',
+            'payer.integer' => 'A conta de origem está inválida!',
+            'payer.exists' => 'A conta de origem informada não existe!',
 
-            'destinationId.required' => 'É necessário informar a conta de destino da transferência!',
-            'destinationId.integer' => 'A conta de destino está inválida!',
-            'destinationId.exists' => 'A conta de destino informada não existe!',
-
-            'accountTypeDestination.required' => 'É necessário informar o tipo da conta!',
-            'accountTypeDestination.integer' => 'O tipo da conta está inválido!',
-            'accountTypeDestination.exists' => 'O tipo da conta informado não existe!'
+            'payee.required' => 'É necessário informar a conta de destino da transferência!',
+            'payee.integer' => 'A conta de destino está inválida!',
+            'payee.exists' => 'A conta de destino informada não existe!'
         ];
     }
 }
