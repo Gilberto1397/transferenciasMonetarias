@@ -17,7 +17,7 @@ class UserRepositoryEloquent implements UserRepository
             'balance' => 0
         ]);
 
-        if (! $createdUser instanceof User || empty($createdUser->id)) {
+        if (!$createdUser instanceof User || empty($createdUser->id)) {
             throw new \DomainException('Não foi possível criar o titular da conta!');
         }
         return $createdUser;
@@ -34,36 +34,52 @@ class UserRepositoryEloquent implements UserRepository
         )->first();
     }
 
-    public function getUserByAccountAndTypeId(int $accountId, int $accountType): User|null
+    public function getPayeeUserById(int $payeeId): User|null
     {
-        $sql = 'select users.* from users';
+        $fisicSql = '
+            select users.* from users
+            inner join fisicaccounts on users.id = fisicaccounts.fisicaccount_user
+            where users.id = :payeeId
+        ';
 
-        if ($accountType === 2) {
-            $sql .= ' inner join fisicaccounts on users.id = fisicaccounts.fisicaccount_user
-                      where fisicaccounts.fisicaccount_id = :accountId';
-        } else {
-            $sql .= ' inner join juristicaccounts on users.id = juristicaccounts.juristicaccount_user
-                      where juristicaccounts.juristicaccount_id = :accountId';
+        $juristicSql = '
+            select users.* from users
+            inner join juristicaccounts on users.id = juristicaccounts.juristicaccount_user
+            where users.id = :payeeId
+        ';
+
+        $fisicResult = User::fromQuery($fisicSql, ['payeeId' => $payeeId]);
+        $juristicResult = User::fromQuery($juristicSql, ['payeeId' => $payeeId]);
+
+        if (($fisicResult->count() > 0 && $juristicResult->count() > 0) ||
+            ($fisicResult->count() > 1 || $juristicResult->count() > 1)) {
+            throw new \DomainException('Mais de uma conta encontrada para o destinatário!');
         }
-        return User::fromQuery($sql, ['accountId' => $accountId])->first();
+        if ($fisicResult->count() === 0 && $juristicResult->count() === 0) {
+            return null;
+        }
+        if ($fisicResult->count() === 1) {
+            return $fisicResult->first();
+        }
+        return $juristicResult->first();
     }
 
     /**
-     * @param User $originAccount
-     * @param User $destinationAccount
+     * @param User $payer
+     * @param User $payee
      * @param float $value
      * @return bool
      * @throws \DomainException
      */
-    public function transferValue(User $originAccount, User $destinationAccount, float $value): bool
+    public function transferValue(User $payer, User $payee, float $value): bool
     {
-        $originAccount->balance -= $value;
-        $destinationAccount->balance += $value;
+        $payer->balance -= $value;
+        $payee->balance += $value;
 
-        if (! $originAccount->save()) {
+        if (!$payer->save()) {
             throw new \DomainException('Falha ao debitar o valor da conta de origem!');
         }
-        if (! $destinationAccount->save()) {
+        if (!$payee->save()) {
             throw new \DomainException('Falha ao creditar o valor da conta de destino!');
         }
         return true;

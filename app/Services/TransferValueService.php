@@ -42,10 +42,10 @@ class TransferValueService
 
             DB::beginTransaction();
             $accounts = $this->service->getTransferAccountsById($request);
-            $this->checkAccountBalance($accounts['originAccount'], $request);
+            $this->checkAccountBalance($accounts['payer'], $request);
             $this->userRepository->transferValue(
-                $accounts['originAccount'],
-                $accounts['destinationAccount'],
+                $accounts['payer'],
+                $accounts['payee'],
                 $request->value
             );
             DB::commit();
@@ -67,13 +67,13 @@ class TransferValueService
     }
 
     /**
-     * @param User $originAccount
+     * @param User $payer
      * @param TransferRequest $request
      * @return void
      */
-    private function checkAccountBalance(User $originAccount, TransferRequest $request): void
+    private function checkAccountBalance(User $payer, TransferRequest $request): void
     {
-        if ($originAccount->balance < $request->value) {
+        if ($payer->balance < $request->value) {
             throw new \DomainException('Saldo insuficiente para realizar a transferência!');
         }
     }

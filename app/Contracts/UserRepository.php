@@ -16,18 +16,17 @@ interface UserRepository
     public function getPayerUserById(int $userId): User|null;
 
     /**
-     * @param int $accountId
-     * @param int $accountType
+     * @param int $payeeId
      * @return User|null
      */
-    public function getPayeeUserById(int $userId): User|null;
+    public function getPayeeUserById(int $payeeId): User|null;
 
     /**
-     * @param User $originAccount
-     * @param User $destinationAccount
+     * @param User $payer
+     * @param User $payee
      * @param float $value
      * @return bool
      * @throws \DomainException
      */
-    public function transferValue(User $originAccount, User $destinationAccount, float $value): bool;
+    public function transferValue(User $payer, User $payee, float $value): bool;
 }

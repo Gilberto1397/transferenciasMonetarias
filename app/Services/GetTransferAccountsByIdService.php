@@ -21,45 +21,45 @@ class GetTransferAccountsByIdService
      */
     public function getTransferAccountsById(TransferRequest $request)
     {
-        $originAccount = $this->getOriginAccount($request->originId);
-        $destinationAccount = $this->getDestinationAccount($request->destinationId, $request->accountTypeDestination);
+        $payer = $this->getPayer($request->payer);
+        $payee = $this->getPayee($request->payee);
 
         return [
-            'originAccount' => $originAccount,
-            'destinationAccount' => $destinationAccount
+            'payer' => $payer,
+            'payee' => $payee
         ];
     }
 
     /**
-     * @param int $originId
-     * @throws \DomainException
+     * @param int $payerId
      * @return User
+     * @throws \DomainException
      */
-    private function getOriginAccount(int $originId): User
+    private function getPayer(int $payerId): User
     {
-        $originAccount = $this->userRepository->getPayerUserById($originId);
+        $payer = $this->userRepository->getPayerUserById($payerId);
 
-        if (empty($originAccount)) {
+        if (empty($payer)) {
             throw new \DomainException('Contas de origem não encontrada!');
         }
-        return $originAccount;
+        return $payer;
     }
 
     /**
-     * @param int $destinationAccountId
+     * @param int $payeeId
      * @param int $accountType
-     * @throws \DomainException
      * @return User
+     * @throws \DomainException
      */
-    private function getDestinationAccount(int $destinationAccountId, int $accountType): User
+    private function getPayee(int $payeeId): User
     {
-        $destinationAccountAccount = $this
+        $payee = $this
             ->userRepository
-            ->getUserByAccountAndTypeId($destinationAccountId, $accountType);
+            ->getPayeeUserById($payeeId);
 
-        if (empty($destinationAccountAccount)) {
-            throw new \DomainException('Contas de destino não encontrada!');
+        if (empty($payee)) {
+            throw new \DomainException('Conta de destino não encontrada!');
         }
-        return $destinationAccountAccount;
+        return $payee;
     }
 }
