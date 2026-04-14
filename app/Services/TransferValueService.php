@@ -7,6 +7,7 @@ use App\Contracts\UserRepository;
 use App\Helpers\CreateLog;
 use App\Helpers\OrganizeResponse;
 use App\Http\Requests\TransferRequest;
+use App\Jobs\NotifyUserJob;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -17,9 +18,9 @@ class TransferValueService
     private AuthorizationClient $client;
 
     public function __construct(
-        UserRepository $userRepository,
+        UserRepository                 $userRepository,
         GetTransferAccountsByIdService $service,
-        AuthorizationClient $client
+        AuthorizationClient            $client
     )
     {
         $this->userRepository = $userRepository;
@@ -49,6 +50,7 @@ class TransferValueService
             );
             DB::commit();
 
+            dispatch(new NotifyUserJob());
             return new OrganizeResponse(
                 200,
                 'Transferência realizada com sucesso!'
