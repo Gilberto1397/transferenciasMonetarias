@@ -21,7 +21,7 @@ class TransferRequest extends DefaultRequest
         return [
             'value' => 'required|numeric',
             'payer' => ['required','integer', 'exists:users,id', new OnlyFisicAccounts()],
-            'payee' => 'required|integer',
+            'payee' => 'required|integer|exists:users,id',
         ];
     }
 
