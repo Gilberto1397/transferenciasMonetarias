@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\JustFisicAccounts;
+use App\Rules\OnlyFisicAccounts;
 
 /**
  * @property float $value
@@ -14,13 +14,13 @@ class TransferRequest extends DefaultRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string>
+     * @return array<string, array<int, OnlyFisicAccounts|string>|string>
      */
     public function rules(): array
     {
         return [
             'value' => 'required|numeric',
-            'payer' => ['required','integer', 'exists:users,id', new JustFisicAccounts()],
+            'payer' => ['required','integer', 'exists:users,id', new OnlyFisicAccounts()],
             'payee' => 'required|integer',
         ];
     }

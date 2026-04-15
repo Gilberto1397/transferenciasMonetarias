@@ -22,17 +22,21 @@ class NotificationClient
          */
         $response = $this->client->postAsync(self::BASE_URL, ['http_errors' => false])->wait();
 
-        /**
-         * @var object{status: string, data: object{authorization: bool}} $responseObject
-         */
-        $responseObject = json_decode($response->getBody()->getContents());
-
         if ($response->getStatusCode() !== 204 && $response->getStatusCode() !== 504) {
             throw new \DomainException('Falha ao notificar transferência! Tente novamente.');
         }
-        if ($response->getStatusCode() === 504 && !empty($responseObject->status) && $responseObject->status === 'error') {
-            return false;
+        $responseObject = null;
+
+        if (!empty($response->getBody()->getContents())) {
+            /**
+             * @var object{status: string, message: string}|null $responseObject
+             */
+            $responseObject = json_decode($response->getBody()->getContents(), false);
+            if ($response->getStatusCode() === 504 && !empty($responseObject->status) && $responseObject->status === 'error') {
+                return false;
+            }
         }
+
         if ($response->getStatusCode() === 204 && is_null($responseObject)) {
             return true;
         }

@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class JustFisicAccounts implements Rule
+class OnlyFisicAccounts implements Rule
 {
     /**
      * Create a new rule instance.

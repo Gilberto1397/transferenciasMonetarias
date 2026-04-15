@@ -47,7 +47,6 @@ class GetTransferAccountsByIdService
 
     /**
      * @param int $payeeId
-     * @param int $accountType
      * @return User
      * @throws \DomainException
      */

@@ -16,7 +16,7 @@ class NotifyUserJob implements ShouldQueue
 
     public int $tries = 6;
 
-    public $maxExceptions = 6;
+    public int $maxExceptions = 6;
 
     /**
      * Create a new job instance.
@@ -45,7 +45,7 @@ class NotifyUserJob implements ShouldQueue
         dump('Notificação enviada com sucesso!');
     }
 
-    public function fail($exception = null)
+    public function fail(\Throwable $exception): void
     {
         CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
