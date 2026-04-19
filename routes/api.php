@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\TransferController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::prefix('contas')->group(function () {
         Route::post('', [AccountController::class, 'createAccount']);
+    });
+    Route::prefix('transfer')->group(function () {
+        Route::put('', [TransferController::class, 'transferValue']);
     });
 });

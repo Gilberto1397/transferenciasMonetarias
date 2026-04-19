@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\CreateLog;
 use App\Http\Requests\CreateAccountRequest;
 use App\Services\CreateAccountService;
 use Illuminate\Http\JsonResponse;

@@ -17,7 +17,7 @@ class FisicAccount extends Model
 {
     use HasFactory;
 
-    protected $table = 'fisicaccount';
+    protected $table = 'fisicaccounts';
     protected $primaryKey = 'fisicaccount_id';
     public $timestamps = false;
 
