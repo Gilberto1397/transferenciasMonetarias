@@ -16,7 +16,7 @@
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^1.0",
-        "laravel/sail": "^1.0.1",
+        "laravel/sail": "^1.25",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
@@ -49,7 +49,8 @@
         ],
         "phpStan": "./vendor/bin/phpstan analyse --memory-limit=2G",
         "phpStanComErros": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline",
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "sail": "vendor/bin/sail"
     },
     "extra": {
         "laravel": {
