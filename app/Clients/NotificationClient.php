@@ -25,16 +25,17 @@ class NotificationClient
         if ($response->getStatusCode() !== 204 && $response->getStatusCode() !== 504) {
             throw new \DomainException('Falha ao notificar transferência! Tente novamente.');
         }
-        $responseObject = null;
 
-        if (!empty($response->getBody()->getContents())) {
-            /**
-             * @var object{status: string, message: string}|null $responseObject
-             */
-            $responseObject = json_decode($response->getBody()->getContents(), false);
-            if ($response->getStatusCode() === 504 && !empty($responseObject->status) && $responseObject->status === 'error') {
-                return false;
-            }
+        /**
+         * @var object{status: string, message: string}|null $responseObject
+         */
+        $responseObject = json_decode($response->getBody()->getContents(), false);
+
+        if (!empty($responseObject) &&
+            $response->getStatusCode() === 504 &&
+            !empty($responseObject->status) &&
+            $responseObject->status === 'error') {
+            return false;
         }
 
         if ($response->getStatusCode() === 204 && is_null($responseObject)) {
