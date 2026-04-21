@@ -16,8 +16,6 @@ class NotifyUserJob implements ShouldQueue
 
     public int $tries = 6;
 
-    public int $maxExceptions = 6;
-
     /**
      * Create a new job instance.
      *
@@ -25,9 +23,6 @@ class NotifyUserJob implements ShouldQueue
      */
     public function __construct()
     {
-        if ($this->connection === 'sync' || env('QUEUE_CONNECTION') === 'sync') {
-            throw new \DomainException('Sistema de filas não configurado. Configure o sistema de filas para usar este serviço!');
-        }
     }
 
     /**
@@ -37,16 +32,15 @@ class NotifyUserJob implements ShouldQueue
      */
     public function handle()
     {
-        if (!(new NotificationClient())->throwNotification()) {
-            dump('Falha ao enviar notificação!');
-            $this->release(1);
-            return;
+        try {
+            if (!(new NotificationClient())->throwNotification()) {
+                dump('Falha ao enviar notificação!');
+                $this->release(1);
+                return;
+            }
+            dump('Notificação enviada com sucesso!');
+        } catch (\Throwable $exception) {
+            CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
         }
-        dump('Notificação enviada com sucesso!');
-    }
-
-    public function fail(\Throwable $exception): void
-    {
-        CreateLog::logError($exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
 }
