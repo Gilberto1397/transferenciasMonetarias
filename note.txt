@@ -1,0 +1,1 @@
+Resolver erros no job e validação de queue driver

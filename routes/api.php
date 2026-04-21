@@ -22,3 +22,7 @@ Route::prefix('v1')->group(function () {
         Route::put('', [TransferController::class, 'transferValue']);
     });
 });
+
+Route::get('/teste', function () {
+    return response()->json(['message' => 'api-online']);
+});
