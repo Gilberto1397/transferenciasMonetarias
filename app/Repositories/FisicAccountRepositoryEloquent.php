@@ -14,7 +14,7 @@ class FisicAccountRepositoryEloquent implements FisicAccountRepository
         $fisicAccount = new FisicAccount();
         $fisicAccount->fisicaccount_cpf = $accountRequest->cpf;
         $fisicAccount->fisicaccount_user = $user->id;
-        $fisicAccount->fisicaccount_accounttype = 2;
+        $fisicAccount->fisicaccount_accounttype = $accountRequest->tipoConta;
         return $fisicAccount->save();
     }
 }
