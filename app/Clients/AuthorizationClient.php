@@ -10,9 +10,9 @@ class AuthorizationClient
     const BASE_URL = 'https://util.devi.tools/api/v2/authorize';
     private Client $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = new Client();
+        $this->client = $client;
     }
 
     public function checkAuthorization(): bool
