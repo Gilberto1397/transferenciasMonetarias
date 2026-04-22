@@ -40,7 +40,7 @@ class GetTransferAccountsByIdService
         $payer = $this->userRepository->getPayerUserById($payerId);
 
         if (empty($payer)) {
-            throw new \DomainException('Contas de origem não encontrada!');
+            throw new \DomainException('Conta de origem não encontrada!');
         }
         return $payer;
     }
