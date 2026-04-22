@@ -10,9 +10,9 @@ class NotificationClient
     const BASE_URL = 'https://util.devi.tools/api/v1/notify';
     private Client $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = new Client();
+        $this->client = $client;
     }
 
     public function throwNotification(): bool
