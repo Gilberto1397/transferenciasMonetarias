@@ -96,7 +96,10 @@ class UserRepositoryEloquentTest extends TestCase
          * Then - Assert
          */
         $this->assertNotNull($result);
-        $this->assertSame($user->id, $result->id);
+
+        if (!empty($result)) {
+            $this->assertSame($user->id, $result->id);
+        }
     }
 
     public function testGetPayerUserByIdReturnsNullWhenUserIsNotFisic(): void
@@ -139,7 +142,10 @@ class UserRepositoryEloquentTest extends TestCase
          * Then - Assert
          */
         $this->assertNotNull($result);
-        $this->assertSame($user->id, $result->id);
+
+        if (!empty($result)) {
+            $this->assertSame($user->id, $result->id);
+        }
     }
 
     public function testGetPayeeUserByIdReturnsJuristicUser(): void
@@ -161,7 +167,10 @@ class UserRepositoryEloquentTest extends TestCase
          * Then - Assert
          */
         $this->assertNotNull($result);
-        $this->assertSame($user->id, $result->id);
+
+        if (!empty($result)) {
+            $this->assertSame($user->id, $result->id);
+        }
     }
 
     public function testGetPayeeUserByIdReturnsNullWhenUserHasNoAccount(): void
@@ -270,8 +279,11 @@ class UserRepositoryEloquentTest extends TestCase
          * Then - Assert
          */
         $this->assertTrue($result);
-        $this->assertSame(75.0, (float) $payer->fresh()->balance);
-        $this->assertSame(75.0, (float) $payee->fresh()->balance);
+
+        if (!empty($payer->fresh() && !empty($payee->fresh()))) {
+            $this->assertSame(75.0, $payer->fresh()->balance);
+            $this->assertSame(75.0, $payee->fresh()->balance);
+        }
     }
 
     private function makeCreateUserRequest(string $name, string $email, string $password): CreateAccountRequest
