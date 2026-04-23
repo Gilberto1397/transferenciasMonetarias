@@ -14,19 +14,26 @@ use App\Services\TransferValueService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Testing\Fakes\QueueFake;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class TransferValueServiceTest extends TestCase
 {
-    private MockObject $notificationClientMock;
+    private NotificationClient $notificationClientMock;
+
+    private QueueFake $queueFake;
 
     protected function setUp(): void
     {
         parent::setUp();
-        Queue::fake();
-        $this->notificationClient = $this->createMock(NotificationClient::class);
-        $this->notificationClient
+
+        /**
+         * @returns QueueFake
+         */
+        $this->queueFake = Queue::fake();
+        $this->notificationClientMock = $this->createMock(NotificationClient::class);
+        $this->notificationClientMock
             ->expects($this->never())
             ->method('throwNotification')
             ->willReturn(true);
@@ -68,7 +75,7 @@ class TransferValueServiceTest extends TestCase
             $userRepositoryMock,
             $accountsServiceMock,
             $authorizationClientMock,
-            $this->notificationClient
+            $this->notificationClientMock
         );
 
         /**
@@ -82,8 +89,8 @@ class TransferValueServiceTest extends TestCase
         $this->assertInstanceOf(OrganizeResponse::class, $response, 'Resposta não é uma instância de OrganizeResponse');
         $this->assertSame(200, $response->getStatusCode(), 'Código de status incorreto');
         $this->assertSame('Transferência realizada com sucesso!', $response->getMessage(), 'Mensagem de sucesso incorreta');
-        $this->assertTrue(Queue::hasPushed(NotifyUserJob::class), 'O job NotifyUserJob não foi despachado.');
-        $this->assertCount(1, Queue::pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado mais de uma vez.');
+        $this->assertTrue($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob não foi despachado.');
+        $this->assertCount(1, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado mais de uma vez.');
     }
 
     public function testTransferValueFailsWhenNotAuthorized(): void
@@ -117,7 +124,7 @@ class TransferValueServiceTest extends TestCase
             $userRepositoryMock,
             $accountsServiceMock,
             $authorizationClientMock,
-            $this->notificationClient
+            $this->notificationClientMock
         );
 
         /**
@@ -131,8 +138,8 @@ class TransferValueServiceTest extends TestCase
         $this->assertInstanceOf(OrganizeResponse::class, $response, 'Resposta não é uma instância de OrganizeResponse');
         $this->assertSame(403, $response->getStatusCode(), 'Código de status incorreto');
         $this->assertSame('Transferência não autorizada!', $response->getMessage(), 'Mensagem de bloqueio incorreta');
-        $this->assertFalse(Queue::hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
-        $this->assertCount(0, Queue::pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
+        $this->assertFalse($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
+        $this->assertCount(0, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
     }
 
     public function testTransferValueFailsWhenBalanceIsInsufficient(): void
@@ -182,7 +189,7 @@ class TransferValueServiceTest extends TestCase
             $userRepositoryMock,
             $accountsServiceMock,
             $authorizationClientMock,
-            $this->notificationClient
+            $this->notificationClientMock
         );
 
         /**
@@ -196,8 +203,8 @@ class TransferValueServiceTest extends TestCase
         $this->assertInstanceOf(OrganizeResponse::class, $response, 'Resposta não é uma instância de OrganizeResponse');
         $this->assertSame(500, $response->getStatusCode(), 'Código de status incorreto');
         $this->assertSame('Saldo insuficiente para realizar a transferência!', $response->getMessage(), 'Mensagem de erro incorreta');
-        $this->assertFalse(Queue::hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
-        $this->assertCount(0, Queue::pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
+        $this->assertFalse($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
+        $this->assertCount(0, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
     }
 
     public function testTransferValueFailsWhenAccountLookupThrowsDomainException(): void
@@ -241,7 +248,7 @@ class TransferValueServiceTest extends TestCase
             $userRepositoryMock,
             $accountsServiceMock,
             $authorizationClientMock,
-            $this->notificationClient
+            $this->notificationClientMock
         );
 
         /**
@@ -255,8 +262,8 @@ class TransferValueServiceTest extends TestCase
         $this->assertInstanceOf(OrganizeResponse::class, $response, 'Resposta não é uma instância de OrganizeResponse');
         $this->assertSame(500, $response->getStatusCode(), 'Código de status incorreto');
         $this->assertSame('Conta de origem não encontrada!', $response->getMessage(), 'Mensagem de erro incorreta');
-        $this->assertFalse(Queue::hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
-        $this->assertCount(0, Queue::pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
+        $this->assertFalse($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
+        $this->assertCount(0, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
     }
 
     public function testTransferValueFailsWhenTransferRepositoryThrowsThrowable(): void
@@ -292,7 +299,7 @@ class TransferValueServiceTest extends TestCase
 
         DB::shouldReceive('beginTransaction')->once();
         DB::shouldReceive('rollBack')->once();
-        DB::shouldNotReceive('commit')->never();
+        DB::shouldReceive('commit')->never();
 
         Log::shouldReceive('error')
             ->once()
@@ -307,7 +314,7 @@ class TransferValueServiceTest extends TestCase
             $userRepositoryMock,
             $accountsServiceMock,
             $authorizationClientMock,
-            $this->notificationClient
+            $this->notificationClientMock
         );
 
         /**
@@ -321,8 +328,8 @@ class TransferValueServiceTest extends TestCase
         $this->assertInstanceOf(OrganizeResponse::class, $response, 'Resposta não é uma instância de OrganizeResponse');
         $this->assertSame(500, $response->getStatusCode(), 'Código de status incorreto');
         $this->assertSame('Ocorreu um erro ao processar a transferência!', $response->getMessage(), 'Mensagem fallback incorreta');
-        $this->assertFalse(Queue::hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
-        $this->assertCount(0, Queue::pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
+        $this->assertFalse($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado.');
+        $this->assertCount(0, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado alguma vez.');
     }
 
     private function makeRequest(int $payerId, int $payeeId, float $value): TransferRequest
