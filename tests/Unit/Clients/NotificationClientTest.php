@@ -161,7 +161,10 @@ class NotificationClientTest extends TestCase
         return $clientMock;
     }
 
-    public function invalidStatusCodes()
+    /**
+     * @return array<int, array<int, int>>
+     */
+    public function invalidStatusCodes(): array
     {
         return [[500], [201], [306], [200], [404]];
     }
