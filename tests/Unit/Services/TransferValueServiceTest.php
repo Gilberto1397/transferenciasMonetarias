@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use App\Clients\AuthorizationClient;
+use App\Clients\NotificationClient;
 use App\Contracts\UserRepository;
 use App\Helpers\OrganizeResponse;
 use App\Http\Requests\TransferRequest;
@@ -13,14 +14,22 @@ use App\Services\TransferValueService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
 class TransferValueServiceTest extends TestCase
 {
+    private MockObject $notificationClientMock;
+
     protected function setUp(): void
     {
         parent::setUp();
         Queue::fake();
+        $this->notificationClient = $this->createMock(NotificationClient::class);
+        $this->notificationClient
+            ->expects($this->never())
+            ->method('throwNotification')
+            ->willReturn(true);
     }
 
     public function testTransferValueSuccess(): void
@@ -58,7 +67,8 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock
+            $authorizationClientMock,
+            $this->notificationClient
         );
 
         /**
@@ -106,7 +116,8 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock
+            $authorizationClientMock,
+            $this->notificationClient
         );
 
         /**
@@ -170,7 +181,8 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock
+            $authorizationClientMock,
+            $this->notificationClient
         );
 
         /**
@@ -228,7 +240,8 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock
+            $authorizationClientMock,
+            $this->notificationClient
         );
 
         /**
@@ -293,7 +306,8 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock
+            $authorizationClientMock,
+            $this->notificationClient
         );
 
         /**

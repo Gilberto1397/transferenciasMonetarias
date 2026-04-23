@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Clients\AuthorizationClient;
+use App\Clients\NotificationClient;
 use App\Contracts\UserRepository;
 use App\Helpers\CreateLog;
 use App\Helpers\OrganizeResponse;
@@ -15,17 +16,20 @@ class TransferValueService
 {
     private UserRepository $userRepository;
     private GetTransferAccountsByIdService $service;
-    private AuthorizationClient $client;
+    private AuthorizationClient $authorizationClient;
+    private NotificationClient $notificationClient;
 
     public function __construct(
         UserRepository                 $userRepository,
         GetTransferAccountsByIdService $service,
-        AuthorizationClient            $client
+        AuthorizationClient            $authorizationClient,
+        NotificationClient             $notificationClient
     )
     {
         $this->userRepository = $userRepository;
         $this->service = $service;
-        $this->client = $client;
+        $this->authorizationClient = $authorizationClient;
+        $this->notificationClient = $notificationClient;
     }
 
     /**
@@ -50,7 +54,7 @@ class TransferValueService
             );
             DB::commit();
 
-            NotifyUserJob::dispatch(); //todo conferir se irá funcionar
+            dispatch(new NotifyUserJob($this->notificationClient));
             return new OrganizeResponse(
                 200,
                 'Transferência realizada com sucesso!'
@@ -80,6 +84,6 @@ class TransferValueService
 
     private function checkTransferAuthorization(): bool
     {
-        return $this->client->checkAuthorization();
+        return $this->authorizationClient->checkAuthorization();
     }
 }
