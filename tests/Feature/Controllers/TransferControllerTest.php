@@ -39,6 +39,9 @@ class TransferControllerTest extends TestCase
          * When - Act
          */
         $response = $this->json('PUT', '/api/v1/transfer', $payload);
+        dump($response);
+        dd($response);
+        
 
         if (!empty($response->getContent())) {
 
@@ -64,7 +67,6 @@ class TransferControllerTest extends TestCase
                 $this->assertTrue($this->queueFake->hasPushed(NotifyUserJob::class), 'O job NotifyUserJob não foi despachado.');
                 $this->assertCount(1, $this->queueFake->pushed(NotifyUserJob::class), 'O job NotifyUserJob foi despachado mais de uma vez.');
             } else {
-                dump($response);
                 $this->assertSame(403, $response->getStatusCode(), 'A resposta deve ter o status 403.');
                 $this->assertTrue($objetoResposta->error, "A propriedade 'error' deve ser falsa.");
                 $this->assertSame(
