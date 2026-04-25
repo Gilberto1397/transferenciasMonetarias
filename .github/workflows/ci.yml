@@ -19,12 +19,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Cria arquivo .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Altera driver de fila
+        run: sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=database/' .env
       - name: Instala dependências do Laravel
         run: composer install
       - name: Gera a chave do Laravel
         run: php artisan key:generate
       - name: Ajusta permissões das pastas de storage e cache
         run: chmod -R 777 storage bootstrap/cache
+      - name: Recarrega configurações do Laravel
+        run: php artisan config:cache
       - name: Cria arquivo database.sqlite
         run: |
           touch database/database.sqlite
