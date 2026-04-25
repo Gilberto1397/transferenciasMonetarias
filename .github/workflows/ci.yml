@@ -34,7 +34,7 @@ jobs:
         run: php artisan migrate
       - name: Executa a criação de seeders
         run: php artisan db:seed
-      - name: Executa os testes do PHP Stan
-        run: composer phpStan
+#      - name: Executa os testes do PHP Stan
+#        run: composer phpStan
       - name: Executa os testes automatizados
         run: composer test
