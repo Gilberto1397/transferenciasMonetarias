@@ -25,6 +25,8 @@ jobs:
         run: php artisan key:generate
       - name: Ajusta permissões das pastas de storage e cache
         run: chmod -R 777 storage bootstrap/cache
+      - name: Recarrega configurações do Laravel
+        run: php artisan config:cache
       - name: Cria arquivo database.sqlite
         run: |
           touch database/database.sqlite
