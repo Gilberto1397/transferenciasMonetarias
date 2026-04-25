@@ -27,18 +27,27 @@ class NotificationClient
         }
 
         /**
-         * @var object{status: string, message: string}|null $responseObject
+         * @var string $responseObject
          */
-        $responseObject = json_decode($response->getBody()->getContents(), false);
+        $responseObject = $response->getBody()->getContents();
 
-        if (!empty($responseObject) &&
+        if ($responseObject !== '') {
+            /**
+             * @var object{status: string, message: string}|null $responseObject
+             */
+            $responseObject = json_decode($responseObject);
+        } else {
+            $responseObject = null;
+        }
+
+        if ($responseObject !== null &&
             $response->getStatusCode() === 504 &&
             !empty($responseObject->status) &&
             $responseObject->status === 'error') {
             return false;
         }
 
-        if ($response->getStatusCode() === 204 && is_null($responseObject)) {
+        if ($response->getStatusCode() === 204 && $responseObject === null) {
             return true;
         }
         throw new \DomainException('Falha no serviço de notificação! Tente novamente.');
