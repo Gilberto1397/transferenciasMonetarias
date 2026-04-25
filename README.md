@@ -107,3 +107,12 @@ Depois do ambiente pronto, aplique a estrutura do banco e os dados iniciais:
 ./vendor/bin/sail composer test
 ```
 
+## Modelo Entidade-Relacionamento da aplicação
+
+Diagrama do modelo entidade-relacionamento (MER):
+https://dbdiagram.io/d/MER-transferencias-693325ba3c4ea889c6be1a9b
+
+## Diagramas de classes e casos de uso
+### No diretório `docs/diagrams` estão os diagramas de casos de uso e de classes, ambos em formato Mermaid e pdf, para facilitar a leitura e manutenção.
+
+
