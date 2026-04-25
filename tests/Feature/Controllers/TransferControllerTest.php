@@ -104,11 +104,10 @@ class TransferControllerTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: array<string, int|string>, 1: string, 2: string, 3: string}>
+     * @return array{payer-invalid: array{array{value: 10, payer: 5, payee: 10}}, data-empty: array{array{}}}
      */
-    private function invalidPayloadProvider(): array
+    public function invalidPayloadProvider(): array
     {
-
         return [
             'payer-invalid' => [
                 [
