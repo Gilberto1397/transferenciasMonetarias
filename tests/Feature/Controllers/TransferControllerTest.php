@@ -39,9 +39,6 @@ class TransferControllerTest extends TestCase
          * When - Act
          */
         $response = $this->json('PUT', '/api/v1/transfer', $payload);
-        dump($response);
-        dd($response);
-        
 
         if (!empty($response->getContent())) {
 
