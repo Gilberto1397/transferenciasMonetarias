@@ -1,64 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Rodando o projeto localmente com Docker
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um aplicativo Laravel. A forma mais prática de executá-lo localmente via Docker é:
 
-## About Laravel
+1. construir a imagem base usada para o Composer;
+2. instalar as dependências PHP dentro de um container;
+3. preparar o arquivo `.env`;
+4. subir os serviços do projeto;
+5. gerar a chave da aplicação, aplicar migrations e seeders;
+6. validar com os testes e com o PHPStan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Pré-requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker instalado;
+- Docker Compose disponível;
+- acesso ao repositório clonado localmente.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 1) Construir a imagem do Composer
 
-## Learning Laravel
+Na raiz do projeto, gere a imagem inicial usada para instalar as dependências:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+docker build -t composer-php83-bootstrap .
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 2) Instalar as dependências PHP
 
-## Laravel Sponsors
+Use a imagem criada no passo anterior para executar o Composer no diretório do projeto:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+docker run --rm -u "$(id -u):$(id -g)" -v "$PWD":/app -w /app composer-php83-bootstrap composer install --no-scripts
+```
 
-### Premium Partners
+> O `--no-scripts` evita a execução automática de hooks do Composer durante a instalação inicial.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 3) Preparar o arquivo de ambiente
 
-## Contributing
+Crie o arquivo `.env` a partir do exemplo, caso ele ainda não exista:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+### Banco de dados com PostgreSQL via Docker Compose
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+use o serviço `pgsql` definido no `docker-compose.yml`, ajuste o `.env` para algo compatível com o container:
 
-## Security Vulnerabilities
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=pgsql
+DB_PORT=5432
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+QUEUE_CONNECTION=database
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+> Os nomes exatos de usuário/senha podem ser ajustados, desde que fiquem coerentes com o `docker-compose.yml` e com o arquivo `.env`.
 
-## License
+## 4) Subir os serviços do projeto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Com o ambiente preparado, suba os containers do projeto:
+
+```bash
+./vendor/bin/sail up -d
+```
+
+## 5) Gerar a chave da aplicação
+
+Assim como no CI, gere a chave do Laravel:
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+
+## 6) Recarregar a configuração
+
+No CI é executado `php artisan config:cache`. Localmente, após alterar o `.env`, faça o mesmo dentro do container:
+
+```bash
+./vendor/bin/sail artisan config:cache
+```
+
+## 7) Executar migrations e seeders
+
+Depois do ambiente pronto, aplique a estrutura do banco e os dados iniciais:
+
+```bash
+./vendor/bin/sail artisan migrate
+```
+
+```bash
+./vendor/bin/sail artisan db:seed
+```
+
+## Para executar os testes automatizados e o PHPStan
+
+### PHPStan
+
+```bash
+./vendor/bin/sail composer phpStan
+```
+
+### Testes automatizados
+
+```bash
+./vendor/bin/sail composer test
+```
+
+## Modelo Entidade-Relacionamento da aplicação
+
+Diagrama do modelo entidade-relacionamento (MER):
+https://dbdiagram.io/d/MER-transferencias-693325ba3c4ea889c6be1a9b
+
+## Diagramas de classes e casos de uso
+### No diretório `docs/diagrams` estão os diagramas de casos de uso e de classes, ambos em formato Mermaid e pdf, para facilitar a leitura e manutenção.
+
+
