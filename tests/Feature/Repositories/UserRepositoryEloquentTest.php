@@ -281,8 +281,8 @@ class UserRepositoryEloquentTest extends TestCase
         $this->assertTrue($result);
 
         if (!empty($payer->fresh() && !empty($payee->fresh()))) {
-            $this->assertSame(75.0, $payer->fresh()->balance);
-            $this->assertSame(75.0, $payee->fresh()->balance);
+            $this->assertSame(75.0, (float)$payer->fresh()->balance);
+            $this->assertSame(75.0, (float)$payee->fresh()->balance);
         }
     }
 
