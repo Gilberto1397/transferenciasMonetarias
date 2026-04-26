@@ -54,7 +54,7 @@ class TransferValueService
             );
             DB::commit();
 
-            dispatch(new NotifyUserJob($this->notificationClient));
+            dispatch(new NotifyUserJob());
             return new OrganizeResponse(
                 200,
                 'Transferência realizada com sucesso!'
