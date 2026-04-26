@@ -16,27 +16,15 @@ class NotifyUserJob implements ShouldQueue
 
     public int $tries = 6;
 
-    private NotificationClient $client;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(NotificationClient $client)
-    {
-        $this->client = $client;
-    }
-
     /**
      * Execute the job.
      *
      * @return void
      */
-    public function handle()
+    public function handle(NotificationClient $client)
     {
         try {
-            if (!$this->client->throwNotification()) {
+            if (!$client->throwNotification()) {
                 dump('Falha ao enviar notificação!');
                 $this->release(1);
                 return;

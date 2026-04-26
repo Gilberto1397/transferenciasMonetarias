@@ -98,9 +98,15 @@ class TransferRequestTest extends TestCase
             'payee' => 3,
         ];
 
+        $value3 = [
+            'payer' => 15,
+            'payee' => 3,
+        ];
+
         return [
             "TransferRequest - value = ''" => ['value', $value1, 'É necessário informar o valor da transferência!'],
             'TransferRequest - value = invalid format' => ['value', $value2, 'O valor da transferência deve ser um número válido!'],
+            'TransferRequest - value not informed' => ['value', $value3, 'É necessário informar o valor da transferência!'],
         ];
     }
 
@@ -115,22 +121,28 @@ class TransferRequestTest extends TestCase
             'payee' => 15,
         ];
 
-        $payer3 = [
+        $payer2 = [
             'value' => 10,
             'payer' => 999999,
             'payee' => 15,
         ];
 
-        $payer4 = [
+        $payer3 = [
             'value' => 10,
             'payer' => 3,
             'payee' => 15,
         ];
 
+        $payer4 = [
+            'value' => 10,
+            'payee' => 15,
+        ];
+
         return [
             "TransferRequest - payer = ''" => ['payer', $payer1, 'É necessário informar a conta que fará à transferência!'],
-            'TransferRequest - payer not exists' => ['payer', $payer3, 'A conta de origem informada não existe!'],
-            'TransferRequest - payer is juristic account' => ['payer', $payer4, 'A conta de origem deve ser do tipo física!'],
+            'TransferRequest - payer not exists' => ['payer', $payer2, 'A conta de origem informada não existe!'],
+            'TransferRequest - payer is juristic account' => ['payer', $payer3, 'A conta de origem deve ser do tipo física!'],
+            'TransferRequest - payer not informed' => ['payer', $payer4, 'É necessário informar a conta que fará à transferência!'],
         ];
     }
 
@@ -151,9 +163,15 @@ class TransferRequestTest extends TestCase
             'payee' => 'invalid',
         ];
 
+        $payee3 = [
+            'value' => 10,
+            'payer' => 15,
+        ];
+
         return [
             "TransferRequest - payee = ''" => ['payee', $payee1, 'É necessário informar a conta de destino da transferência!'],
             'TransferRequest - payee = invalid format' => ['payee', $payee2, 'A conta de destino está inválida!'],
+            'TransferRequest - payee not informed' => ['payee', $payee3, 'É necessário informar a conta de destino da transferência!'],
         ];
     }
 }

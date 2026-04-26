@@ -12,7 +12,7 @@ class AccountController
     {
         $response = $service->createAccount($request);
         return response()->json(
-            ['message' => $response->getMessage(), 'error' => $response->getError()],
+            ['message' => $response->getMessage(), 'error' => $response->hasError()],
             $response->getStatusCode()
         );
     }
