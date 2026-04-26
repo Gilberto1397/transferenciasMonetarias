@@ -74,8 +74,7 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock,
-            $this->notificationClientMock
+            $authorizationClientMock
         );
 
         /**
@@ -123,8 +122,7 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock,
-            $this->notificationClientMock
+            $authorizationClientMock
         );
 
         /**
@@ -188,8 +186,7 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock,
-            $this->notificationClientMock
+            $authorizationClientMock
         );
 
         /**
@@ -247,8 +244,7 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock,
-            $this->notificationClientMock
+            $authorizationClientMock
         );
 
         /**
@@ -313,8 +309,7 @@ class TransferValueServiceTest extends TestCase
         $service = new TransferValueService(
             $userRepositoryMock,
             $accountsServiceMock,
-            $authorizationClientMock,
-            $this->notificationClientMock
+            $authorizationClientMock
         );
 
         /**

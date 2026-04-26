@@ -17,19 +17,16 @@ class TransferValueService
     private UserRepository $userRepository;
     private GetTransferAccountsByIdService $service;
     private AuthorizationClient $authorizationClient;
-    private NotificationClient $notificationClient;
 
     public function __construct(
         UserRepository                 $userRepository,
         GetTransferAccountsByIdService $service,
         AuthorizationClient            $authorizationClient,
-        NotificationClient             $notificationClient
     )
     {
         $this->userRepository = $userRepository;
         $this->service = $service;
         $this->authorizationClient = $authorizationClient;
-        $this->notificationClient = $notificationClient;
     }
 
     /**
