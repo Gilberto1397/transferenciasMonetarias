@@ -25,7 +25,7 @@ class OrganizeResponseTest extends TestCase
         $this->assertSame(201, $response->getStatusCode(), 'Código de status incorreto.');
         $this->assertSame('Conta criada com sucesso!', $response->getMessage(), 'Mensagem incorreta.');
         $this->assertSame($data, $response->getData(), 'Dados incorretos.');
-        $this->assertFalse($response->getError(), 'Flag de erro incorreta para status de sucesso.');
+        $this->assertFalse($response->hasError(), 'Flag de erro incorreta para status de sucesso.');
     }
 
     public function testConstructorUsesDefaultMessageAndData(): void
@@ -41,28 +41,28 @@ class OrganizeResponseTest extends TestCase
         $this->assertSame(204, $response->getStatusCode(), 'Código de status incorreto.');
         $this->assertSame('', $response->getMessage(), 'Mensagem padrão incorreta.');
         $this->assertNull($response->getData(), 'Dados padrão deveriam ser nulos.');
-        $this->assertFalse($response->getError(), 'Flag de erro incorreta para status menor que 400.');
+        $this->assertFalse($response->hasError(), 'Flag de erro incorreta para status menor que 400.');
     }
 
     public function testGetErrorReturnsFalseForStatusBelow400(): void
     {
         $response = new OrganizeResponse(399, 'Sem erro');
 
-        $this->assertFalse($response->getError(), 'Status 399 não deveria ser erro.');
+        $this->assertFalse($response->hasError(), 'Status 399 não deveria ser erro.');
     }
 
     public function testGetErrorReturnsTrueForStatus400(): void
     {
         $response = new OrganizeResponse(400, 'Requisição inválida');
 
-        $this->assertTrue($response->getError(), 'Status 400 deveria ser erro.');
+        $this->assertTrue($response->hasError(), 'Status 400 deveria ser erro.');
     }
 
     public function testGetErrorReturnsTrueForStatusAbove400(): void
     {
         $response = new OrganizeResponse(500, 'Erro interno');
 
-        $this->assertTrue($response->getError(), 'Status 500 deveria ser erro.');
+        $this->assertTrue($response->hasError(), 'Status 500 deveria ser erro.');
     }
 }
 
